@@ -1,1 +1,1 @@
-# game-mario-run
+# Mini game Mario Run em JS.
