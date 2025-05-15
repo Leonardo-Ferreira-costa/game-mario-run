@@ -7,7 +7,7 @@ const scoreElement = document.getElementById('score');
 // Variáveis de controle
 let isJumping = false;
 let gameLoop;
-let score = 0;
+let score = 0000000;
 let alreadyScored = false;
 let gameActive = true;
 
