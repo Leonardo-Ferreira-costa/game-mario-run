@@ -8,7 +8,7 @@ const scoreElement = document.getElementById('score');
 let isJumping = false;
 let gameLoop;
 let score = 0;
-let lastPipeX = 0;
+let alreadyScored = false;
 let gameActive = true;
 
 // Efeito de pulo
@@ -31,23 +31,28 @@ const checkCollision = () => {
     const pipeRect = pipe.getBoundingClientRect();
     const marioRect = mario.getBoundingClientRect();
 
-    // Lógica de pontuação (verifica se o cano foi completamente ultrapassado)
-    if (pipeRect.right < marioRect.left && pipeRect.right > lastPipeX) {
+    // Lógica de pontuação - verifica se o Mario passou do centro do cano
+    if (pipeRect.right < marioRect.left && !alreadyScored) {
         score++;
         scoreElement.textContent = score;
+        alreadyScored = true;
         // Efeito visual ao marcar ponto
-        scoreElement.style.animation = 'scorePop 0.3s';
-        setTimeout(() => { scoreElement.style.animation = ''; }, 300);
+        scoreElement.classList.add('score-pop');
+        setTimeout(() => scoreElement.classList.remove('score-pop'), 300);
     }
-    lastPipeX = pipeRect.right;
+    
+    // Reseta a flag quando um novo cano aparece
+    if (pipeRect.right > marioRect.right) {
+        alreadyScored = false;
+    }
 
     // Lógica de colisão
     const marioHitboxRight = marioRect.right - 30;
     const marioHitboxBottom = marioRect.bottom - 15;
-    const isPipeInFront = pipeRect.left <= marioHitboxRight;
-    const isMarioTooLow = marioHitboxBottom >= pipeRect.top;
+    const isColliding = pipeRect.left <= marioHitboxRight && 
+                       marioHitboxBottom >= pipeRect.top;
 
-    if (isPipeInFront && isMarioTooLow) {
+    if (isColliding) {
         endGame();
     } else {
         gameLoop = requestAnimationFrame(checkCollision);
@@ -59,17 +64,18 @@ const endGame = () => {
     gameActive = false;
     pipe.style.animation = 'none';
     mario.style.animation = 'none';
+    mario.style.left = `${pipe.offsetLeft - 30}px`;
     mario.src = 'img/game-over.png';
     mario.style.width = '75px';
     mario.style.marginLeft = '0';
     
-    // Verifica e atualiza recorde
+    // Verifica recorde
     const highScore = localStorage.getItem('highScore') || 0;
     if (score > highScore) {
         localStorage.setItem('highScore', score);
         const highScoreElement = document.createElement('div');
-        highScoreElement.textContent = `Novo Recorde: ${score}!`;
         highScoreElement.className = 'high-score';
+        highScoreElement.textContent = `Novo Recorde: ${score}!`;
         gameOverScreen.appendChild(highScoreElement);
     }
     
@@ -82,10 +88,9 @@ const restartGame = () => {
     gameActive = true;
     score = 0;
     scoreElement.textContent = '0';
-    lastPipeX = 0;
+    alreadyScored = false;
     
     gameOverScreen.style.display = 'none';
-    // Remove mensagem de recorde se existir
     const highScoreMsg = document.querySelector('.high-score');
     if (highScoreMsg) highScoreMsg.remove();
     
