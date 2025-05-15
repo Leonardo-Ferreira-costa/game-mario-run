@@ -32,7 +32,7 @@ const checkCollision = () => {
     const marioRect = mario.getBoundingClientRect();
 
     // Lógica de pontuação - verifica se o Mario passou do centro do cano
-    if (pipeRect.right < marioRect.left) {
+    if (pipeRect.right < marioRect.left && !alreadyScored) {
         score++;
         scoreElement.textContent = score;
         alreadyScored = true;
@@ -99,7 +99,7 @@ const restartGame = () => {
     mario.style.marginLeft = '0';
     mario.style.animation = '';
     mario.style.bottom = '0';
-    mario.style.left = '0';
+    mario.style.left = '30px';
     
     pipe.style.animation = '';
     pipe.style.left = '';
