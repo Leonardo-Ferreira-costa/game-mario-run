@@ -16,7 +16,8 @@ jobs:
 
         #usa o gitleaks para procurar por 
         #segredos como senhas, tokens e chaves de API no seu código.
-        #Não é o caso para esse projeto, somente demonstração.
+
+        ###Não é o caso para esse projeto, somente demonstração.###
       - name: Segurança: Verificação de Segredos
         uses: gitleaks/gitleaks-action@v8 # Use a versão mais recente
         # Opcional: Configure para falhar o build se segredos forem encontrados
@@ -27,13 +28,25 @@ jobs:
 
         #Análise de Vulnerabilidades em Dependências 
         #usa o OWASP Dependency Check para verificar 
-        #se há vulnerabilidades conhecidas nas bibliotecas JavaScript
+        #se há vulnerabilidades conhecidas nas bibliotecas JavaScript e CVEs conhecidas
+
+        ###Não é o caso para esse projeto, somente demonstração.###
       - name: Segurança: Análise de Vulnerabilidades em Dependências
         uses: owasp/dependency-check-action@v3 # Use a versão mais recente
         with:
           projectName: 'Mario Run' # Defina um nome para o seu projeto
           format: 'Sarif'
           outputDirectory: 'gl-sarif'
+
+
+        #Análise de Vulnerabilidades em código JavaScript
+        #Uso não sanitizado de innerHTML
+        #Manipulação insegura de eventos
+        #Uso inseguro de jQuery
+      - name: Segurança: Análise de Segurança (CodeQL)
+        uses: github/codeql-action/analyze@v2
+        with:
+          languages: 'javascript'
 
 
         #Envia os resultados da análise de vulnerabilidades 
