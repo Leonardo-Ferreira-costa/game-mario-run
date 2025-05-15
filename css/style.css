@@ -46,6 +46,34 @@
     animation: clouds-animation 20s infinite linear;
 
 }
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: none; /* Inicialmente oculto */
+}
+
+.game-over h1 {
+    color: red;
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+#restart {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#restart:hover {
+    background: #cc0000;
+}
 
 @keyframes clouds-animation{
   
