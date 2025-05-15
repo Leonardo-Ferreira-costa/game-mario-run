@@ -5,6 +5,7 @@ const restartButton = document.getElementById('restart');
 let isJumping = false;
 let gameLoop;
 
+// Pulo do Mario
 const jump = () => {
     if (isJumping) return;
     
@@ -17,52 +18,65 @@ const jump = () => {
     }, 500);
 };
 
+// Detecção de colisão precisa
 const checkCollision = () => {
     const pipeRect = pipe.getBoundingClientRect();
     const marioRect = mario.getBoundingClientRect();
 
+    // Ajuste fino da hitbox
+    const marioWidth = 50;  // Largura real do Mario no CSS
+    const pipeHeight = 80;  // Altura da área de colisão do cano
+
     const isColliding = 
-        pipeRect.left <= marioRect.right && 
-        pipeRect.right >= marioRect.left &&
-        pipeRect.top <= marioRect.bottom;
+        pipeRect.left <= marioRect.right - marioWidth && 
+        pipeRect.right >= marioRect.left + marioWidth &&
+        marioRect.bottom <= pipeRect.top + pipeHeight;
 
     if (isColliding) {
-        // Para o jogo e mostra a tela de Game Over
+        // Para todas as animações
         pipe.style.animation = 'none';
         mario.style.animation = 'none';
+        
+        // Posiciona o Mario exatamente no ponto de colisão
+        mario.style.left = `${pipeRect.left - marioWidth}px`;
+        
+        // Configura o game over
         mario.src = 'img/game-over.png';
         mario.style.width = '75px';
-        mario.style.marginLeft = '50px';
+        mario.style.marginLeft = '0';
 
+        // Desativa controles e mostra tela
         document.removeEventListener('keydown', jump);
-        cancelAnimationFrame(gameLoop); // Para a verificação de colisão
-        gameOverScreen.style.display = 'block'; // Mostra a tela de Game Over
+        cancelAnimationFrame(gameLoop);
+        gameOverScreen.style.display = 'flex'; // Usando flex para centralizar
     } else {
-        gameLoop = requestAnimationFrame(checkCollision); // Continua o jogo
+        gameLoop = requestAnimationFrame(checkCollision);
     }
 };
 
-// Reinicia o jogo
+// Reinício completo do jogo
 const restartGame = () => {
-    gameOverScreen.style.display = 'none'; // Esconde a tela de Game Over
+    // Esconde a tela de game over
+    gameOverScreen.style.display = 'none';
     
-    // Reseta o Mario
-    mario.src = 'img/mario.gif'; // Imagem original do Mario
+    // Reseta o Mario completamente
+    mario.src = 'img/mario.gif';
     mario.style.width = '150px';
     mario.style.marginLeft = '0';
     mario.style.animation = '';
     mario.style.bottom = '0';
+    mario.style.left = '0'; // ← Reseta posição horizontal!
     
     // Reseta o cano
     pipe.style.animation = '';
     pipe.style.left = '';
     
-    // Reinicia os eventos e o loop
+    // Reinicia o jogo
     document.addEventListener('keydown', jump);
     gameLoop = requestAnimationFrame(checkCollision);
 };
 
-// Inicia o jogo pela primeira vez
+// Inicialização
 document.addEventListener('keydown', jump);
 restartButton.addEventListener('click', restartGame);
 gameLoop = requestAnimationFrame(checkCollision);
