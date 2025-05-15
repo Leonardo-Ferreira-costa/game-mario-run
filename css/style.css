@@ -61,10 +61,13 @@
 }
 
 .game-over-content {
-    background: linear-gradient(135deg, #ff0000, #cc0000); /* Gradiente vermelho */
+    background: linear-gradient(135deg, #0082ff, #003bcc); /* Gradiente vermelho */
     padding: 2rem 3rem;
     border-radius: 15px;
     text-align: center;
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    gap: 20px; /* Espaçamento entre elementos */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     border: 4px solid #fff; /* Borda branca */
     transform: scale(0.9);
@@ -74,8 +77,8 @@
 .game-over-content>img{
  height: 150px;   
 }
-.game-over-content>button{
-    align-self: center;
+.game-over-content > button{
+    margin: 0 auto; /* Garante centralização extra (redundante, mas segura) */
 }
 
 .game-over h1 {
@@ -107,18 +110,18 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: 0 5px 0 #cc0000; /* Sombra vermelha */
+    box-shadow: 0 5px 0 #0e0303; /* Sombra vermelha */
 }
 
 #restart:hover {
     background: #fff;
     transform: translateY(-3px);
-    box-shadow: 0 8px 0 #cc0000;
+    box-shadow: 0 8px 0 #080101;
 }
 
 #restart:active {
     transform: translateY(2px);
-    box-shadow: 0 2px 0 #cc0000;
+    box-shadow: 0 2px 0 #020000;
 }
 
 /* Animações */
