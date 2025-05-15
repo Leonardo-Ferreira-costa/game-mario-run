@@ -1,9 +1,9 @@
-name: Deploy Static Content to GitHub Pages
+name: Deploy com verificação de segurança
 
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
@@ -11,9 +11,42 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Necessário para algumas ferramentas de segurança
 
-      - name: Deploy to GitHub Pages
+        #usa o gitleaks para procurar por 
+        #segredos como senhas, tokens e chaves de API no seu código.
+        #Não é o caso para esse projeto, somente demonstração.
+      - name: Segurança: Verificação de Segredos
+        uses: gitleaks/gitleaks-action@v8 # Use a versão mais recente
+        # Opcional: Configure para falhar o build se segredos forem encontrados
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #   FAIL_ON_SECRETS: "true"
+
+
+        #Análise de Vulnerabilidades em Dependências 
+        #usa o OWASP Dependency Check para verificar 
+        #se há vulnerabilidades conhecidas nas bibliotecas JavaScript
+      - name: Segurança: Análise de Vulnerabilidades em Dependências
+        uses: owasp/dependency-check-action@v3 # Use a versão mais recente
+        with:
+          projectName: 'Mario Run' # Defina um nome para o seu projeto
+          format: 'Sarif'
+          outputDirectory: 'gl-sarif'
+
+
+        #Envia os resultados da análise de vulnerabilidades 
+        #para o GitHub Security, onde você pode visualizá-los 
+        #na aba "Security" do seu repositório.
+      - name: Segurança: Envio de Resultados para o GitHub Security
+        uses: github/codeql-action/upload-sarif@v2 # Use a versão mais recente
+        with:
+          sarif_file: gl-sarif/dependency-check-report.sarif
+
+      - name: Deploy para GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          branch: gh-pages 
-          folder: .
+          branch: gh-pages # A branch onde o site será publicado
+          folder: . # A pasta raiz do seu repositório contém os arquivos estáticos
+
