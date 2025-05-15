@@ -8,7 +8,7 @@ const scoreElement = document.getElementById('score');
 let isJumping = false;
 let gameLoop;
 let score = 0;
-let lastPipePassed = false;
+let lastPipeX = 0;
 let gameActive = true;
 
 // Efeito de pulo
@@ -31,23 +31,19 @@ const checkCollision = () => {
     const pipeRect = pipe.getBoundingClientRect();
     const marioRect = mario.getBoundingClientRect();
 
-    // Hitbox ajustada
-    const marioHitboxRight = marioRect.right - 30;
-    const marioHitboxBottom = marioRect.bottom - 15;
-
-    // Lógica de pontuação
-    if (pipeRect.right < marioRect.left && !lastPipePassed) {
+    // Lógica de pontuação (verifica se o cano foi completamente ultrapassado)
+    if (pipeRect.right < marioRect.left && pipeRect.right > lastPipeX) {
         score++;
         scoreElement.textContent = score;
-        lastPipePassed = true;
         // Efeito visual ao marcar ponto
         scoreElement.style.animation = 'scorePop 0.3s';
         setTimeout(() => { scoreElement.style.animation = ''; }, 300);
-    } else if (pipeRect.left > marioRect.right) {
-        lastPipePassed = false;
     }
+    lastPipeX = pipeRect.right;
 
     // Lógica de colisão
+    const marioHitboxRight = marioRect.right - 30;
+    const marioHitboxBottom = marioRect.bottom - 15;
     const isPipeInFront = pipeRect.left <= marioHitboxRight;
     const isMarioTooLow = marioHitboxBottom >= pipeRect.top;
 
@@ -86,7 +82,7 @@ const restartGame = () => {
     gameActive = true;
     score = 0;
     scoreElement.textContent = '0';
-    lastPipePassed = false;
+    lastPipeX = 0;
     
     gameOverScreen.style.display = 'none';
     // Remove mensagem de recorde se existir
