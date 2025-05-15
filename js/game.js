@@ -21,7 +21,7 @@ const checkCollision = () => {
 
     // Hitbox ajustada
     const marioHitboxRight = marioRect.right - 30; // Frente do Mario
-    const marioHitboxBottom = marioRect.bottom - 10; // Ignora pés do sprite
+    const marioHitboxBottom = marioRect.bottom - 15; // Ignora pés do sprite
 
     // Lógica corrigida
     const isPipeInFront = pipeRect.left <= marioHitboxRight;
