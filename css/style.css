@@ -74,6 +74,9 @@
 .game-over-content>img{
  height: 150px;   
 }
+.game-over-content>button{
+    align-self: center;
+}
 
 .game-over h1 {
     color: #fff;
