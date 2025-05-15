@@ -19,17 +19,15 @@ const checkCollision = () => {
     const pipeRect = pipe.getBoundingClientRect();
     const marioRect = mario.getBoundingClientRect();
 
-    // Valores ajustáveis para hitbox:
-    const marioWidth = 30;
-    const pipeHeight = 60;
-    const marioBottomMargin = 15;
+    // Hitbox ajustada
+    const marioHitboxRight = marioRect.right - 30; // Frente do Mario
+    const marioHitboxBottom = marioRect.bottom - 10; // Ignora pés do sprite
 
-    const isColliding = 
-        pipeRect.left <= marioRect.right - marioWidth && 
-        pipeRect.right >= marioRect.left + marioWidth &&
-        marioRect.bottom - marioBottomMargin <= pipeRect.top + pipeHeight;
+    // Lógica corrigida
+    const isPipeInFront = pipeRect.left <= marioHitboxRight;
+    const isMarioTooLow = marioHitboxBottom >= pipeRect.top;
 
-    if (isColliding) {
+    if (isPipeInFront && isMarioTooLow) {
         pipe.style.animation = 'none';
         mario.style.animation = 'none';
         mario.src = 'img/game-over.png';
@@ -57,7 +55,7 @@ const restartGame = () => {
     gameLoop = requestAnimationFrame(checkCollision);
 };
 
-// Inicia o jogo:
+// Inicia o jogo
 document.addEventListener('keydown', jump);
 restartButton.addEventListener('click', restartGame);
 gameLoop = requestAnimationFrame(checkCollision);
