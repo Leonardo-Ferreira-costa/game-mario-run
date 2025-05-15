@@ -1,6 +1,7 @@
 const mario = document.querySelector('.mario');
 const pipe = document.querySelector('.pipe');
 const gameOverScreen = document.querySelector('.game-over');
+const gameOverContent = document.querySelector('.game-over-content');
 const restartButton = document.getElementById('restart');
 const scoreElement = document.getElementById('score');
 
@@ -76,7 +77,7 @@ const endGame = () => {
         const highScoreElement = document.createElement('div');
         highScoreElement.className = 'high-score';
         highScoreElement.textContent = `Novo Recorde: ${score}!`;
-        gameOverScreen.appendChild(highScoreElement);
+        gameOverContent.appendChild(highScoreElement);
     }
     
     document.removeEventListener('keydown', jump);
