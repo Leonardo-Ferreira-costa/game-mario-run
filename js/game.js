@@ -30,10 +30,12 @@ const checkCollision = () => {
 
     const pipeRect = pipe.getBoundingClientRect();
     const marioRect = mario.getBoundingClientRect();
-
+debugger;
     // Lógica de pontuação - verifica se o Mario passou do centro do cano
     if (pipeRect.right < marioRect.left && !alreadyScored) {
+        debugger;
         score++;
+        debugger;
         scoreElement.textContent = score;
         alreadyScored = true;
         // Efeito visual ao marcar ponto
