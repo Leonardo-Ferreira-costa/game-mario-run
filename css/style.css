@@ -71,6 +71,10 @@
     animation: popIn 0.4s ease-out forwards;
 }
 
+.game-over-content>img{
+ height: 150px;   
+}
+
 .game-over h1 {
     color: #fff;
     font-size: 3.5em;
